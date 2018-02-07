@@ -54,7 +54,7 @@ module.exports = async (client) => {
                 if(playerByUUID) {
                     member.addRole(config.verification.roles.player);
 
-                    if(playerByUUID[1].death) {
+                    if(playerByUUID[1].death.time) {
                         member.addRole(config.verification.roles.dead);
                     } else {
                         member.removeRole(config.verification.roles.dead);
