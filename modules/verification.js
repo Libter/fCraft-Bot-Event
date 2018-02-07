@@ -26,11 +26,11 @@ rethinkdb.connect({
 module.exports = async (client) => {
     try {
         const playersEndpointURL = `https://api.fcraft.pl/event/player/list?key0=${config.key}`;
-        const players = JSON.parse(await httpAsPromised.get(playersEndpointURL, { resolve: 'body' }));
+        const players = Object.entries(JSON.parse(await httpAsPromised.get(playersEndpointURL, { resolve: 'body' })));
         const members = client.guilds.get(config.verification.guild).members.array();
 
         for(const member of members) {
-            const playerByDiscordTag = players.find(player => player.discord === member.user.tag);
+            const playerByDiscordTag = players.find(player => player[1].discord === member.user.tag);
 
             if(playerByDiscordTag) {
                 const user = await rethinkdb.table('users').get(member.id).run(database);
@@ -38,7 +38,7 @@ module.exports = async (client) => {
                 if(!user) {
                     await rethinkdb.table('users').insert({
                         id: member.id,
-                        uuid: playerByDiscordTag.uuid
+                        uuid: playerByDiscordTag[0]
                     }).run(database);
                 }
             }
@@ -46,7 +46,7 @@ module.exports = async (client) => {
             const user = await rethinkdb.table('users').get(member.id).run(database);
 
             if(user) {
-                const playerByUUID = players.find(player => player.uuid === user.uuid);
+                const playerByUUID = players.find(player => player[0] === user.uuid);
                 const nickname = (await apiClient.resolverUuids([user.uuid]))[user.uuid];
 
                 member.setNickname(nickname).catch(error => {});
@@ -54,7 +54,7 @@ module.exports = async (client) => {
                 if(playerByUUID) {
                     member.addRole(config.verification.roles.player);
 
-                    if(playerByUUID.death) {
+                    if(playerByUUID[1].death) {
                         member.addRole(config.verification.roles.dead);
                     } else {
                         member.removeRole(config.verification.roles.dead);
