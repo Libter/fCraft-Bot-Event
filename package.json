@@ -1,0 +1,20 @@
+{
+    "name": "fevent",
+    "version": "1.0.0",
+    "homepage": "https://github.com/fCommunity/fEvent",
+    "bugs": "https://github.com/fCommunity/fEvent/issues",
+    "license": "MIT",
+    "author": "Jqmey <jqmey@outlook.com> (https://github.com/Jqmey)",
+    "main": "server.js",
+    "repository": "fCommunity/fEvent",
+    "dependencies": {
+        "api-fcraft.pl": "^1.4.4",
+        "discord.js": "^11.3.0",
+        "http-as-promised": "^2.0.1",
+        "rethinkdb": "^2.3.3"
+    },
+    "engines": {
+        "node": ">=8.9.4"
+    },
+    "private": true
+}

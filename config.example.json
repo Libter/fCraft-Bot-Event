@@ -1,0 +1,20 @@
+{
+    "token": "TOKEN",
+    "key": "KLUCZ API/0",
+    "verification": {
+        "guild": "SERWER DISCORDA",
+        "roles": {
+            "player": "ID ROLI GRACZ",
+            "dead": "ID ROLI MARTWY"
+        }
+    },
+    "database": {
+        "host": "HOST BAZY",
+        "port": 28015,
+        "database": "NAZWA BAZY",
+        "user": {
+            "name": "NAZWA UŻYTKOWNIKA",
+            "password": "HASŁO UŻYTKOWNIKA"
+        }
+    }
+}
