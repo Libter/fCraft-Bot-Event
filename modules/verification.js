@@ -49,18 +49,28 @@ async function verification(client) {
                 const playerByUUID = players.find(player => player[0] === user.uuid);
                 const nickname = (await apiClient.resolverUuids([user.uuid]))[user.uuid];
 
-                member.setNickname(nickname).catch(error => {});
+                if(member.displayName !== nickname) {
+                    member.setNickname(nickname).catch(error => {});
+                }
 
                 if(playerByUUID) {
-                    member.addRole(config.verification.roles.player);
+                    if(!member.roles.get(config.verification.roles.player)) {
+                        member.addRole(config.verification.roles.player);
+                    }
 
                     if(playerByUUID[1].death.time) {
-                        member.addRole(config.verification.roles.dead);
+                        if(!member.roles.get(config.verification.roles.dead)) {
+                            member.addRole(config.verification.roles.dead);
+                        }
                     } else {
-                        member.removeRole(config.verification.roles.dead);
+                        if(member.roles.get(config.verification.roles.dead)) {
+                            member.removeRole(config.verification.roles.dead);
+                        }
                     }
                 } else {
-                    member.removeRole(config.verification.roles.player);
+                    if(member.roles.get(config.verification.roles.player)) {
+                        member.removeRole(config.verification.roles.player);
+                    }
                 }
             }
         }
