@@ -84,7 +84,7 @@ exports.noMessage = client => {
 };
 
 exports.message = message => {
-    verification(client).then(() => {
+    verification(message.client).then(() => {
         message.reply('zweryfikowano!');
         message.channel.stopTyping();
     });
