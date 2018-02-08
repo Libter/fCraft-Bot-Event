@@ -23,7 +23,7 @@ rethinkdb.connect({
     database = connection;
 });
 
-module.exports = async (client) => {
+async function verification(client) {
     try {
         const playersEndpointURL = `https://api.fcraft.pl/event/player/list?key0=${config.key}`;
         const players = Object.entries(JSON.parse(await httpAsPromised.get(playersEndpointURL, { resolve: 'body' })));
@@ -67,4 +67,15 @@ module.exports = async (client) => {
     } catch(error) {
         console.error(error);
     }
+}
+
+exports.noMessage = client => {
+    verification(client);
+};
+
+exports.message = message => {
+    verification(client).then(() => {
+        message.reply('zweryfikowano!');
+        message.channel.stopTyping();
+    });
 };

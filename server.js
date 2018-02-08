@@ -13,24 +13,25 @@ const verification = require(path.join(__dirname, 'modules', 'verification.js'))
 const client = new Discord.Client();
 
 client.on('ready', () => {
-    client.user.setActivity(`!weryfikacja | v${packageInfo.version}`);
+    client.user.setActivity(`!zweryfikuj | v${packageInfo.version}`);
     console.log('Client is ready!');
 
     setInterval(() => {
-        verification(client);
+        verification.noMessage(client);
     }, 60 * 60 * 1000);
 });
 
 client.on('guildMemberAdd', member => {
-    verification(client);
+    verification.noMessage(client);
 });
 
 client.on('message', message => {
     const args = message.content.trim().split(/\s+/);
 
     switch(args[0]) {
-        case '!weryfikacja':
-            verification(client);
+        case '!zweryfikuj':
+            message.channel.startTyping();
+            verification.message(message);
             break;
     }
 });
