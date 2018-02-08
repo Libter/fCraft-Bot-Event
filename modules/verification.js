@@ -25,7 +25,9 @@ rethinkdb.connect({
 
 async function verification(client) {
     const playersEndpointURL = `https://api.fcraft.pl/event/player/list?key0=${config.key}`;
-    const players = Object.entries(JSON.parse(await httpAsPromised.get(playersEndpointURL, { resolve: 'body' })));
+    const playersRequest = JSON.parse(await httpAsPromised.get(playersEndpointURL, { resolve: 'body' }));
+    const nicknames = await apiClient.resolverUuids(Object.keys(playersRequest));
+    const players = Object.entries(playersRequest);
     const members = client.guilds.get(config.verification.guild).members.array();
 
     for(const member of members) {
@@ -46,7 +48,7 @@ async function verification(client) {
 
         if(user) {
             const playerByUUID = players.find(player => player[0] === user.uuid);
-            const nickname = (await apiClient.resolverUuids([user.uuid]))[user.uuid];
+            const nickname = nicknames[user.uuid];
 
             if(member.displayName !== nickname) {
                 member.setNickname(nickname).catch(error => {});
@@ -83,13 +85,14 @@ exports.noMessage = client => {
 
 exports.message = message => {
     verification(message.client).then(() => {
-        if(!message.member.role.get(config.verification.roles.player)) {
+        if(!message.member.roles.get(config.verification.roles.player)) {
             message.reply('nie można było zweryfikować! Upewnij się, czy jesteś zapisany.')
         }
 
         message.channel.stopTyping();
     }).catch(error => {
         message.reply('wystąpił błąd!');
+        message.channel.stopTyping();
         console.error(error);
     });
 };
