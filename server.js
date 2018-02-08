@@ -26,9 +26,11 @@ client.on('guildMemberAdd', member => {
 });
 
 client.on('message', message => {
+    if(!message.guild) return;
+
     const args = message.content.trim().split(/\s+/);
 
-    switch(args[0]) {
+    switch(args[0].toLowerCase()) {
         case '!zweryfikuj':
             message.channel.startTyping();
             verification.message(message);
