@@ -37,11 +37,13 @@ client.on('message', message => {
             verification.message(message);
             break;
         case 'event!gracz':
+        case 'e!gracz':
             message.channel.startTyping();
             playerCmd(false, message, args);
             message.channel.stopTyping();
             break;
         case 'event!ranking':
+        case 'e!ranking':
             message.channel.startTyping();
             playerCmd(true, message, args);
             message.channel.stopTyping();

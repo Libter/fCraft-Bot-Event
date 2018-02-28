@@ -23,17 +23,25 @@ module.exports = async (ranking, message, args) => {
     }
 
     if (ranking) {
-        killings = killings.sort(function (a, b) {
-            return a.length - b.length;
-        });
+        let limit = args[1] ? args[1] : 5;
+        if (limit == 0) { limit = Number.MAX_VALUE; }
+
+        const sortedKillings = [];
+        for (const nick in killings) {
+            sortedKillings.push([nick, killings[nick]]);
+        }
+        sortedKillings.sort(function(a, b) {
+    		return b[1].length - a[1].length;
+    	});
 
         const embed = new discord.RichEmbed();
         embed.setAuthor('Ranking zabójstw', 'https://cdn.fcraft.pl/logo/event/v2.2.png');
         embed.setColor('FF8600');
-        let i = 0;
-        for (const nick in killings) {
-            i++; if (i > 5) { break; }
-            embed.addField(`Miejsce #${i}`, `${nick} (${killings[nick].length}): ${killings[nick].join(', ')}`, false);
+        for (const i in sortedKillings) {
+            const place = parseInt(i) + 1;
+            if (place > limit) { break; }
+            const killing = sortedKillings[i];
+            embed.addField(`Miejsce #${place}`, `${killing[0]} (${killing[1].length}): ${killing[1].join(', ')}`, false);
         }
         message.channel.send(embed);
         return;
