@@ -10,6 +10,7 @@ const packageInfo = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.jso
 
 const verification = require(path.join(__dirname, 'modules', 'verification.js'));
 const playerCmd = require(path.join(__dirname, 'modules', 'player.js'));
+const historyCmd = require(path.join(__dirname, 'modules', 'history.js'));
 
 const client = new Discord.Client();
 
@@ -35,6 +36,12 @@ client.on('message', message => {
         case '!zweryfikuj':
             message.channel.startTyping();
             verification.message(message);
+            break;
+        case 'event!historia':
+        case 'e!historia':
+            message.channel.startTyping();
+            historyCmd(message, args);
+            message.channel.stopTyping();
             break;
         case 'event!gracz':
         case 'e!gracz':

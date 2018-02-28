@@ -23,8 +23,9 @@ module.exports = async (ranking, message, args) => {
     }
 
     if (ranking) {
-        let limit = args[1] ? args[1] : 5;
+        let limit = args[1] ? parseInt(args[1]) : 5;
         if (limit == 0) { limit = Number.MAX_VALUE; }
+        if (limit < 0) { limit = 5; } if (limit > 25) { limit = 25; }
 
         const sortedKillings = [];
         for (const nick in killings) {
