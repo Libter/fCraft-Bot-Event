@@ -38,7 +38,12 @@ client.on('message', message => {
             break;
         case 'event!gracz':
             message.channel.startTyping();
-            playerCmd(message, args);
+            playerCmd(false, message, args);
+            message.channel.stopTyping();
+            break;
+        case 'event!ranking':
+            message.channel.startTyping();
+            playerCmd(true, message, args);
             message.channel.stopTyping();
             break;
     }
