@@ -28,6 +28,13 @@ module.exports = async (message, args) => {
     }
 
     const player = players[uuid];
+    const killings = [];
+    for (const everyUuid in players) {
+        const everyPlayer = players[everyUuid];
+        if (everyPlayer.death.reason == uuid) {
+            killings.push(resolved[everyUuid].replace('_', '\\_'));
+        }
+    }
 
     const embed = new discord.RichEmbed();
     embed.setAuthor('Informacje o graczu eventu', 'https://cdn.fcraft.pl/logo/event/v2.2.png');
@@ -36,11 +43,12 @@ module.exports = async (message, args) => {
     embed.addField('Nick', nick.replace('_', '\\_'), true);
     embed.addField('Discord', player.discord, true);
     embed.addField('Zapisanie się', player.applied == null ? '_brak_' :
-        moment(player.applied * 1000).format('DD.MM.YYYY HH:mm'), true);
+        moment(player.applied * 1000).format('DD.MM.YYYY o HH:mm'), true);
     embed.addField('Dołączenie', player.joined == null ? '_brak_' :
-        moment(player.joined * 1000).format('DD.MM.YYYY HH:mm'), true);
+        moment(player.joined * 1000).format('DD.MM.YYYY o HH:mm'), true);
+    embed.addField('Zabici gracze', killings.length == 0 ? '_brak_' : killings.join(', '));
     embed.addField('Śmierć', player.death.time == null ? '_brak_' :
-        moment(player.death.time * 1000).format('DD.MM.YYYY HH:mm') + ' przez ' +
+        moment(player.death.time * 1000).format('DD.MM.YYYY o HH:mm') + ' przez ' +
         (player.death.reason == null ? 'siły natury' : resolved[player.death.reason].replace('_', '\\_')), false);
     message.channel.send(embed);
 };
