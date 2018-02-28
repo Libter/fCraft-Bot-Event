@@ -11,6 +11,7 @@
         "api-fcraft.pl": "^1.4.4",
         "discord.js": "^11.3.0",
         "http-as-promised": "^2.0.1",
+        "moment": "^2.20.1",
         "rethinkdb": "^2.3.3"
     },
     "engines": {

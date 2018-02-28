@@ -9,6 +9,7 @@ const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json')));
 const packageInfo = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json')));
 
 const verification = require(path.join(__dirname, 'modules', 'verification.js'));
+const playerCmd = require(path.join(__dirname, 'modules', 'player.js'));
 
 const client = new Discord.Client();
 
@@ -34,6 +35,11 @@ client.on('message', message => {
         case '!zweryfikuj':
             message.channel.startTyping();
             verification.message(message);
+            break;
+        case 'event!gracz':
+            message.channel.startTyping();
+            playerCmd(message, args);
+            message.channel.stopTyping();
             break;
     }
 });
