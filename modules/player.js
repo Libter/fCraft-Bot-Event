@@ -28,11 +28,25 @@ module.exports = async (message, args) => {
     }
 
     const player = players[uuid];
-    const killings = [];
+    const killings = []; const killingsCount = [];
     for (const everyUuid in players) {
         const everyPlayer = players[everyUuid];
-        if (everyPlayer.death.reason == uuid) {
-            killings.push(resolved[everyUuid].replace('_', '\\_'));
+        if (everyPlayer.death.reason != null) {
+            const key = resolved[everyPlayer.death.reason].replace('_', '\\_');
+            if (!(key in killingsCount)) {
+                killingsCount[key] = 0;
+            } killingsCount[key]++;
+
+            if (everyPlayer.death.reason == uuid) {
+                killings.push(resolved[everyUuid].replace('_', '\\_'));
+            }
+        }
+    }
+
+    for (const i in killings) {
+        const victim = killings[i];
+        if (victim in killingsCount) {
+            killings[i] += ` (${killingsCount[victim]})`;
         }
     }
 
