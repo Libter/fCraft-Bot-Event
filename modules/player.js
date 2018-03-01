@@ -31,9 +31,7 @@ module.exports = async (ranking, message, args) => {
         for (const nick in killings) {
             sortedKillings.push([nick, killings[nick]]);
         }
-        sortedKillings.sort(function(a, b) {
-    		return b[1].length - a[1].length;
-    	});
+        sortedKillings.sort((a, b) => b[1].length - a[1].length);
 
         const embed = new discord.RichEmbed();
         embed.setAuthor('Ranking zabójstw', 'https://cdn.fcraft.pl/logo/event/v2.2.png');
@@ -67,12 +65,12 @@ module.exports = async (ranking, message, args) => {
     const player = players[uuid];
 
     nick = nick.replace('_', '\\_');
-    for (const i in killings[nick]) {
-        const victim = killings[nick][i];
+    killings[nick] = killings[nick].map((victim) => {
         if (victim in killings) {
-            killings[nick][i] += ` (${killings[victim].length})`;
+            victim += ` (${killings[victim].length})`;
         }
-    }
+        return victim
+    });
 
     const embed = new discord.RichEmbed();
     embed.setAuthor('Informacje o graczu eventu', 'https://cdn.fcraft.pl/logo/event/v2.2.png');

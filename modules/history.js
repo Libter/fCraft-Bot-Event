@@ -27,8 +27,7 @@ module.exports = async (message, args) => {
 
     const filters = args.slice(2);
     history = history.filter(function(event) {
-        for (const i in filters) {
-            let filter = filters[i];
+        for (const filter of filters) {
             switch (filter) {
                 case 'zapisy':
                     if (event[1] != 'apply') { return false; }
@@ -47,9 +46,7 @@ module.exports = async (message, args) => {
         return true;
     });
 
-    history = history.sort(function(a, b) {
-        return b[0] - a[0];
-    });
+    history = history.sort((a, b) => b[0] - a[0]);
 
     let page = args[1] ? parseInt(args[1]) : 1;
     const maxPage = Math.ceil(history.length / 10);

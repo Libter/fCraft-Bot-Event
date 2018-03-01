@@ -40,20 +40,23 @@ client.on('message', message => {
         case 'event!historia':
         case 'e!historia':
             message.channel.startTyping();
-            historyCmd(message, args);
-            message.channel.stopTyping();
+            historyCmd(message, args).then(() => {
+                message.channel.stopTyping();
+            });
             break;
         case 'event!gracz':
         case 'e!gracz':
             message.channel.startTyping();
-            playerCmd(false, message, args);
-            message.channel.stopTyping();
+            playerCmd(false, message, args).then(() => {
+                message.channel.stopTyping();
+            });
             break;
         case 'event!ranking':
         case 'e!ranking':
             message.channel.startTyping();
-            playerCmd(true, message, args);
-            message.channel.stopTyping();
+            playerCmd(true, message, args).then(() => {
+                message.channel.stopTyping();
+            });
             break;
     }
 });
